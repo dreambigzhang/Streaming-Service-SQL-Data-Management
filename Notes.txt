@@ -5,3 +5,5 @@ same sno
 playlist pid alone is primary key, if new playlist, pid randomly generated + check if unique
 
 Input database name as userinput
+
+Don't make assumption on the format of IDs
