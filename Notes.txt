@@ -2,7 +2,7 @@
 -> primary key of sessions table is (uid, sno) so it's ok that sessions of different users have the
 same sno
 
-playlist pid alone is primary key, if new playlist, pid randomly generated + check if unique
+playlist pid alone is primary key, if new playlist, pid randomly generated + check if unique using query
 
 Input database name as userinput
 
