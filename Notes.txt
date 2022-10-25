@@ -10,3 +10,6 @@ Input database name as userinput
 Don't make assumption on the format of IDs
 
 Lady Gaga is a match for lad
+
+
+search playlist: just match playlist name or check song title in the playlist too?
