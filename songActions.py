@@ -26,8 +26,6 @@ def listen(uid, sid):
     conn.commit()
     print(uid, "listened to song", sid, "during session", sno)
 
-
-
 def haveListened(uid, sid, sno):
     haveListened = '''
     SELECT *
@@ -42,5 +40,41 @@ def haveListened(uid, sid, sno):
         return False
 
 #listen('u5', 6)
+'''
+More information for a song is the 
+names of artists who performed it in addition to 
+id, title and duration of the song as well as the 
+names of playlists the song is in (if any)'''
+def songInfo(sid):
+    songInfo = '''
+    SELECT DISTINCT a.name
+    FROM (songs s LEFT OUTER JOIN perform p ON s.sid = p.sid)
+    LEFT OUTER JOIN artists a ON p.aid = a.aid
+    WHERE s.sid = :sid;'''
+    c.execute(songInfo, {'sid':sid})
+    artists = c.fetchall()
+    print("Artist(s):")
+    for artist in artists:
+        print(artist[0])
+    songInfo = '''
+    SELECT DISTINCT s.sid, s.title, s.duration
+    FROM songs s
+    WHERE s.sid = :sid;'''
+    c.execute(songInfo, {'sid':sid})
+    songDetail = c.fetchall()
+    print("sid:", songDetail[0][0], "\ntitle:", songDetail[0][1], "\nduration(sec):", songDetail[0][2])
+    getPlaylists = '''
+    SELECT DISTINCT p.title
+    FROM ((songs s LEFT OUTER JOIN perform p ON s.sid = p.sid)
+    LEFT OUTER JOIN plinclude pl ON s.sid = pl.sid)
+    LEFT OUTER JOIN playlists p ON pl.pid = p.pid
+    WHERE s.sid = :sid;'''
+    c.execute(getPlaylists, {'sid':sid})
+    playlists = c.fetchall()
+    print("Playlists", songDetail[0][1], "is in:")
+    for playlist in playlists:
+        print(playlist[0])
 
+
+songInfo(10)
 conn.close()
