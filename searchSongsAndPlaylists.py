@@ -1,4 +1,3 @@
-from re import sub
 import sqlite3
 conn = sqlite3.connect('./a2.db')
 

@@ -29,7 +29,20 @@ WHERE p.uid = :uid;
 */
 
 -- make new playlist (pid generated in python)
-INSERT INTO playlists VALUES (:pid, :title, :uid);
+--INSERT INTO playlists VALUES (:pid, :title, :uid);
 
+--detete from plinclude
+/*DELETE FROM plinclude
+WHERE pid = 1 AND sid = 26 AND sorder = 6;
+*/
 -- insert into plinclude
-INSERT INTO plinclude VALUES (:pid, :sid, :sorder)
+
+/*
+INSERT INTO plinclude VALUES (1, 26, 6);
+-- get max +1 pid
+/*
+SELECT MAX(p.pid)+1
+FROM playlists p*/
+
+-- create new playlist
+/*INSERT INTO playlists VALUES (:pid,:title,:uid);

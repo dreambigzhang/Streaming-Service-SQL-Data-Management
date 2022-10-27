@@ -1,5 +1,4 @@
 import sqlite3
-
 import startSession
 conn = sqlite3.connect('./a2.db')
 
