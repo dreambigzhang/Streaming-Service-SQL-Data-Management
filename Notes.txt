@@ -13,3 +13,6 @@ Lady Gaga is a match for lad
 
 
 search playlist: just match playlist name or check song title in the playlist too?
+
+user cannot have more than 1 active session
+
