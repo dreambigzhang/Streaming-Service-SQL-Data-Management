@@ -40,20 +40,4 @@ def login():
                 print("Not a valid username or password")
     return validUser, ValidArtist
                 
-def signup(): 
-    validNewID = 0
-    while validNewID == 0: 
 
-        userID = input("Input a unique ID: ")
-        # check if unique ID
-        c.execute('''
-            SELECT uid
-            FROM users  
-            WHERE uid = ?'''
-            ,(userID))
-        validNewID = c.rowcount()
-        if validNewID == 0: 
-            print("ID is not unique")
-
-    userPWD = input("Input a new password")
-    c.execute("""INSERT INTO users VALUE (?,?)""",(userID,userPWD))
