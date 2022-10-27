@@ -26,7 +26,7 @@ def main():
         enterType = input("Type 1 to login or 2 to sign up")
 
     # LOGIN portion NEED TO SPLIT INTO FUNCTIONS
-    validUser = False  # False if incorrect id and pwd, True otherwise
+    validUser = False  # true if gives rowcount > 0
     ValidArtist = False
     if enterType == 1:
         while not validUser or not validArtist: 
