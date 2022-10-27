@@ -40,6 +40,4 @@ def scrolling(list1, i):
     else:
         print("Viewing ended")
 
-    
-
 scrolling(list1, 0) # testing purpose
