@@ -19,16 +19,20 @@ def connect(path):
 def main():
     global connection, cursor
 
-    path = "./mini_proj.db"
+    # connect to db (need to take input?)
+    path = "./a2.db"
     connect(path)
-    enterType = 0
+    
+    enterType = 0  # 1 = login ... 2 = sign up
     while enterType != 1 and enterType != 2: 
         enterType = input("Type 1 to login or 2 to sign up")
 
     # LOGIN portion NEED TO SPLIT INTO FUNCTIONS
     validUser = False  # true if gives rowcount > 0
     ValidArtist = False
+    
     if enterType == 1:
+        # keep asking for id and password till correct, how should we add option to back out? 
         while not validUser or not validArtist: 
 
             ID = input("Enter ID: ")
@@ -36,6 +40,8 @@ def main():
 
             validUser = False
             validArtist = False
+            
+            #check if valid user
             cursor.execute('''
                 SELECT u.uid 
                 FROM users u
@@ -46,6 +52,7 @@ def main():
                 userID = cursor.fetchone()
                 validUser = True
         
+            #check if valid artist
             cursor.execute('''
                 SELECT a.aid 
                 FROM artists  
@@ -55,16 +62,21 @@ def main():
             if cursor.rowcount() != 0:
                 artistID = cursor.fetchone()
                 validArtist = True
-    else:
+    else if enterType == 2:
         validNewID = 0
         while validNewID == 0: 
-            userID = input("Input an ID")
+            
+            userID = input("Input a unique ID: ")
+            # check if unique ID
             cursor.execute('''
                 SELECT uid
                 FROM users  
                 WHERE uid = ?'''
                 ,(userID))
             validNewID = cursor.rowcount()
+            if validNewID == 0: 
+                print("ID is not unique")
+                
         userPWD = input("Input a new password")
         cursor.execute("""INSERT INTO users VALUE (?,?)""",(userID,userPWD))
     
