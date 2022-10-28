@@ -1,9 +1,3 @@
-import sqlite3
-conn = sqlite3.connect('./a2.db')
-
-c = conn.cursor()
-c.execute('PRAGMA foreign_keys=ON;')
-
 def numOfMatch(str, keywords):
     matchCount = 0
     for keyword in keywords:
@@ -20,7 +14,8 @@ def tupleToList(listOfTuples): # copy a list of tuple to a list of lists
         returnList.append(sublist)
     return returnList
 
-def searchSongsAndPlaylists(keywords):
+def searchSongsAndPlaylists(keywords, conn):
+    c = conn.cursor()
     '''
     keywords is a list of keywords
     '''
@@ -71,7 +66,7 @@ def searchSongsAndPlaylists(keywords):
     print(songsAndPlaylist)
     
 
-list1 = ["Kill", "You", "What", "Young", "Music"]
-searchSongsAndPlaylists(list1)
+#list1 = ["Kill", "You", "What", "Young", "Music"]
+#searchSongsAndPlaylists(list1)
 
 
