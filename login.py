@@ -34,7 +34,7 @@ def login(): # returns userID and artistID, at least one is not None
             row = c.fetchone()
             if c.rowcount() != 0:
                 artistID = row[0]
-            if userId == None and artistId == None:
+            if userID == None and artistID == None:
                 print("Not a valid username or password")
     return userID, artistID
                 
