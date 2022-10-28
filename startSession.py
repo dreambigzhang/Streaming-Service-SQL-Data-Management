@@ -1,9 +1,6 @@
-import sqlite3
-conn = sqlite3.connect('./a2.db')
 
-c = conn.cursor()
-
-def sessionActive(uid): 
+def sessionActive(uid, conn): 
+    c = conn.cursor()
     # beta test works
     # false if there's no active session otherwise get sno
     checkSessionActive = '''
@@ -19,13 +16,14 @@ def sessionActive(uid):
     else:
         return False
 
-def startSession(uid): 
+def startSession(uid, conn): 
+    c = conn.cursor()
     # returns the sno of currently active session or newly created session
     # beta test works
     # check if user already has active session
-    sno = sessionActive(uid) # false if there's no active session otherwise get sno
+    sno = sessionActive(uid, conn) # false if there's no active session otherwise get sno
     if sno!= False:
-        print("There is already an active session", sno)
+        print("*There is already an active session", sno)
         return sno
     else:
         getSno = '''
@@ -40,7 +38,7 @@ def startSession(uid):
         VALUES (:uid, :sno, strftime('%Y-%m-%d','now'), NULL);'''
         c.execute(newSession, {'uid':uid, 'sno':sno})
         conn.commit()
-        print("New session created", sno)
+        print("*New session created", sno)
         return sno
         
 
@@ -48,4 +46,4 @@ def startSession(uid):
 
 
     
-#startSession('u1') # testing
+#startSession('u1', conn) # testing
