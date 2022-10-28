@@ -1,3 +1,4 @@
+from scrolling import scrolling
 def numOfMatch(str, keywords):
     matchCount = 0
     for keyword in keywords:
@@ -71,7 +72,9 @@ def searchSongsAndPlaylists(uid, conn):
         songsAndPlaylist[i].append(numOfMatch(songsAndPlaylist[i][1], keywords)) 
         # sort based on the number of keyword matches
     songsAndPlaylist.sort(key=lambda x: x[-1], reverse=True)
-    print(songsAndPlaylist)
+    #print(songsAndPlaylist)
+    if scrolling(uid, songsAndPlaylist, 0, conn)==True:
+        return True
     
 
 #list1 = ["Kill", "You", "What", "Young", "Music"]
