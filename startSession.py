@@ -8,7 +8,7 @@ def sessionActive(uid, conn):
     FROM sessions se
     WHERE se.uid = :uid
     AND se.end IS NULL;'''
-    c.execute(checkSessionActive, {'uid':uid});
+    c.execute(checkSessionActive, {'uid':uid})
     activeSession = c.fetchall()
     if activeSession != []:
         sno = activeSession[0][0]

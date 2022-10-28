@@ -3,6 +3,7 @@ import sqlite3
 from scrolling import clear
 from startSession import startSession
 from endSession import endSession
+from searchSongsAndPlaylists import searchSongsAndPlaylists
 conn = sqlite3.connect('./a2.db')
 
 
@@ -19,7 +20,8 @@ def userMainMenu(uid, conn):
         endSession(uid, conn)
         userMainMenu(uid, conn)
     elif action == '3':
-        print("search for songs and playlists")
+        clear()
+        searchSongsAndPlaylists(uid, conn)
     elif action == '4':
         print("search for artists")
     else:

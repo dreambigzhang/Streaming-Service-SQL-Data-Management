@@ -14,8 +14,16 @@ def tupleToList(listOfTuples): # copy a list of tuple to a list of lists
         returnList.append(sublist)
     return returnList
 
-def searchSongsAndPlaylists(keywords, conn):
+def searchSongsAndPlaylists(uid, conn):
     c = conn.cursor()
+
+    print("Search for songs and playlists")
+    keywords = []
+    numOfKeywords = int(input("How many keywords: "))
+    print("Input the keywords (press enter after every keyword)")
+    for i in range(numOfKeywords):
+        keyword = input()
+        keywords.append(keyword)
     '''
     keywords is a list of keywords
     '''
