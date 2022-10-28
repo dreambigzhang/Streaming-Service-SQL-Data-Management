@@ -3,6 +3,7 @@ import sqlite3
 from startSession import startSession
 from endSession import endSession
 from searchSongsAndPlaylists import searchSongsAndPlaylists
+from searchArtists import searchArtists
 conn = sqlite3.connect('./a2.db')
 
 from os import system, name
@@ -34,7 +35,9 @@ def userMainMenu(uid, conn):
         if searchSongsAndPlaylists(uid, conn)==True:
             userMainMenu(uid, conn)
     elif action == '4':
-        print("search for artists")
+        clear()
+        if searchArtists(uid, conn)== True:
+            userMainMenu(uid, conn)
     else:
         print("logout")
 

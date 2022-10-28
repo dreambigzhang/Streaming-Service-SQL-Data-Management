@@ -31,7 +31,7 @@ def scrolling(uid,list1, i, conn):
     if i+5 > len(list1):
         i = len(list1)-5
     showFive(list1, i)
-    scroll = input("w to scroll up, s to scroll down. Input anything else to return to the main menu")
+    scroll = input("w to scroll up, s to scroll down. Input anything else to return to the main menu: ")
     if scroll.lower()=='w' or scroll.lower()=='s':
         if scroll.lower() == 'w':
             if scrolling(uid, list1, i-5, conn) == True:
