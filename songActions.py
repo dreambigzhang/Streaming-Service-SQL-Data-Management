@@ -1,12 +1,11 @@
 import sqlite3
 from createPlaylist import createPlaylist
 import startSession
-conn = sqlite3.connect('./a2.db')
 
-c = conn.cursor()
-c.execute('PRAGMA foreign_keys=ON;')
 
-def listen(uid, sid):
+def listen(uid, sid, conn):
+    c = conn.cursor()
+    c.execute('PRAGMA foreign_keys=ON;')
     # beta test works
     # decide if user has session
     sno = startSession.startSession(uid) # returns the sno of currently active session or newly created session
@@ -26,8 +25,12 @@ def listen(uid, sid):
         c.execute(insertToListen, {'uid':uid, 'sno':sno, 'sid':sid})
     conn.commit()
     print(uid, "listened to song", sid, "during session", sno)
-
-def haveListened(uid, sid, sno):
+    
+    conn.close()
+    
+def haveListened(uid, sid, sno, conn):
+    c = conn.cursor()
+    c.execute('PRAGMA foreign_keys=ON;')
     haveListened = '''
     SELECT *
     FROM listen l
@@ -39,14 +42,16 @@ def haveListened(uid, sid, sno):
         return True
     else:
         return False
-
+    conn.close()
 #listen('u5', 6)
 '''
 More information for a song is the 
 names of artists who performed it in addition to 
 id, title and duration of the song as well as the 
 names of playlists the song is in (if any)'''
-def songInfo(sid):
+def songInfo(sid, conn):
+    c = conn.cursor()
+    c.execute('PRAGMA foreign_keys=ON;')
     # beta test works
     # need to add later: see if sid input is valid sid
     songInfo = '''
@@ -77,9 +82,12 @@ def songInfo(sid):
     print("Playlists", songDetail[0][1], "is in:")
     for playlist in playlists:
         print(playlist[0])
+    conn.close()
 #songInfo(10)
 
-def addSongToPlaylist(uid, sid):
+def addSongToPlaylist(uid, sid, conn):
+    c = conn.cursor()
+    c.execute('PRAGMA foreign_keys=ON;')
     # beta test works
     getPlaylists = '''
     SELECT p.pid, p.title
@@ -110,6 +118,7 @@ def addSongToPlaylist(uid, sid):
         c.execute(insertIntoPlaylist, {'pid': pid, 'sid': sid, 'sorder': sorder})
         conn.commit()
         print("Song", sid, "added to playlist", pid, "at position", sorder)
-
+    
+    conn.close()
 #addSongToPlaylist('u25', 26)
-conn.close()
+
