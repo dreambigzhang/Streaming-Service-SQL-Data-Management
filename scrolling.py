@@ -19,7 +19,11 @@ def clear(): # need to test this works on lab machine
 #list1 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 def showFive(list1, i):
     listLen = len(list1)
-    i  = i % listLen
+    if listLen == 0:
+        i = 0
+    else:
+        i = i % listLen
+    
     clear()
     currentlyDisplayedID = []
     j = i

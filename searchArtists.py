@@ -1,4 +1,6 @@
 from scrolling import scrolling
+import sqlite3
+
 def numOfMatch(str, keywords):
     matchCount = 0
     for keyword in keywords:
@@ -6,37 +8,15 @@ def numOfMatch(str, keywords):
             matchCount+=1
     return matchCount
 
-def tupleToList(listOfTuples): # copy a list of tuple to a list of lists
-    returnList = []
-    for tuple in listOfTuples:
-        sublist = []
-        for element in tuple:
-            sublist.append(element)
-        returnList.append(sublist)
-    return returnList
-
-def dictToList(dict):
-    returnList = []
-    for pair in dict:
-        returnList.append([pair]+dict[pair])
-    return returnList
-
 def searchArtists(uid, conn):
-
+    # get the keywords from the user
     c = conn.cursor()
     print("-----Search for artists-----")
-    keywords = []
-    numOfKeywords = int(input("How many keywords: "))
-    print("Input the keywords (press enter after every keyword)")
-    for i in range(numOfKeywords):
-        keyword = input()
-        keywords.append(keyword)
-    '''
-    keywords is a list of keywords
-    '''
-    '''
-    get all matching artists and their songs
-    '''
+    keywords = input("Enter keywords separated by spaces: ")
+    keywords = keywords.split()
+    #keywords is a list of keywords
+    
+    #get all matching artists and their songs
     getArtistAndSongs = '''
     SELECT DISTINCT a.aid, a.name, a.nationality, s.title, s.sid
     FROM artists a, perform p, songs s
@@ -48,18 +28,18 @@ def searchArtists(uid, conn):
         getArtistAndSongs += " OR lower(s.title) LIKE '%"+keywords[i].lower()+"%'"
     getArtistAndSongs+=');'
 
-   
     #print(getArtistAndSongs)
     c.execute(getArtistAndSongs)
     artistsAndSongs = c.fetchall()
+    artistsAndSongs = [list(i) for i in artistsAndSongs]
     
-    artistsAndSongs = tupleToList(artistsAndSongs)
     #print(artistsAndSongs)
     # use a dictionary structure where aid is the key
     artistDict = {}
     for row in artistsAndSongs:
         if not (row[0] in artistDict):
             artistDict[row[0]]=[row[1],row[2],0,0]
+    
     # add number of songs of a artist
     getNumOfSongs = '''
     SELECT DISTINCT a.aid, COUNT(DISTINCT p.sid)
@@ -75,7 +55,6 @@ def searchArtists(uid, conn):
         if aid in artistDict:
             artistDict[aid][2] = songCount
     # count the number of matches for each artist in their song title
-    
     for row in artistsAndSongs:
         aid = row[0]
         songTitle = row[3]
@@ -91,12 +70,13 @@ def searchArtists(uid, conn):
         aName = c.fetchone()[0]
         artistDict[aid][-1]+= numOfMatch(aName, keywords)
     #print(artistDict)
-    artistList = dictToList(artistDict)
+    artistList = [[i] + artistDict[i] for i in artistDict]
     #print(artistList)
     if scrolling(uid, artistList, 0, conn)==True:
         return True
     
-#list1 = ["The"]
-#searchArtists("u1")
+    
 
+if __name__ == "__main__":
+    searchArtists("u1", sqlite3.connect("./a2.db"))
 
