@@ -6,9 +6,13 @@ def login(conn): # returns userID and artistID, at least one is not None
     
     userID = None
     artistID = None
-    while userID == None and artistID == None: 
+    back = False
+    while userID == None and artistID == None and back == False: 
             #take ID and password
-            ID = input("Enter ID: ")
+            
+            ID = input("Enter ID or input -1 to go back: ")  # userID and artistID will be None
+            if ID.strip() == '-1':
+                break
             pwd = getpass.getpass(prompt='Enter your password: ', stream= None)
             
             # query all users matching ID and pwd
@@ -38,5 +42,5 @@ def login(conn): # returns userID and artistID, at least one is not None
             # if incorrect ID and pwd tell user and redo loop
             if userID == None and artistID == None:
                 print("Not a valid username or password")
-    return userID, artistID
+    return userID, artistID  # if both are none then user is backing out
                
