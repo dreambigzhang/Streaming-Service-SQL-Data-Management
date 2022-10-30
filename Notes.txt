@@ -16,3 +16,4 @@ search playlist: just match playlist name or check song title in the playlist to
 
 user cannot have more than 1 active session
 
+don't forget to conn.commit() after every change to the database
