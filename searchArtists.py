@@ -1,6 +1,20 @@
 from scrolling import scrolling
 import sqlite3
 
+# import only system from os
+
+from os import system, name
+from playlistInfo import playlistInfo
+from songActions import songActions
+from artistInfo import artistScrolling
+
+def clear(): # need to test this works on lab machine
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+    else:
+        _ = system('clear')
+
 def numOfMatch(str, keywords):
     matchCount = 0
     for keyword in keywords:
@@ -72,7 +86,7 @@ def searchArtists(uid, conn):
     #print(artistDict)
     artistList = [[i] + artistDict[i] for i in artistDict]
     #print(artistList)
-    if scrolling(uid, artistList, 0, conn)==True:
+    if artistScrolling(uid, artistList, 0, conn)==True:
         return True
     
     
