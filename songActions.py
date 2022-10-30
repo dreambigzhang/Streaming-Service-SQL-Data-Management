@@ -1,12 +1,7 @@
 import sqlite3
 
-from matplotlib.widgets import EllipseSelector
 from createPlaylist import createPlaylist
 import startSession
-
-c = conn.cursor()
-c.execute('PRAGMA foreign_keys=ON;')
-
 
     
 def listen(uid, sid):
