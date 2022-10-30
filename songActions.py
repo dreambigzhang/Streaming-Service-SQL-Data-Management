@@ -1,4 +1,6 @@
 import sqlite3
+
+from matplotlib.widgets import EllipseSelector
 from createPlaylist import createPlaylist
 import startSession
 conn = sqlite3.connect('./a2.db')
@@ -6,6 +8,8 @@ conn = sqlite3.connect('./a2.db')
 c = conn.cursor()
 c.execute('PRAGMA foreign_keys=ON;')
 
+
+    
 def listen(uid, sid):
     # beta test works
     # decide if user has session
@@ -110,6 +114,32 @@ def addSongToPlaylist(uid, sid):
         c.execute(insertIntoPlaylist, {'pid': pid, 'sid': sid, 'sorder': sorder})
         conn.commit()
         print("Song", sid, "added to playlist", pid, "at position", sorder)
+def sidValid(sid,conn):
+    c = conn.cursor()
+    query = '''
+    SELECT *
+    FROM songs s
+    WHERE s.sid = :sid;'''
+    c.execute(query,{'sid':sid})
+    result = c.fetchall()
+    if result ==[]:
+        return False
+    else:
+        return True
 
-#addSongToPlaylist('u25', 26)
-conn.close()
+def songActions(uid, sid, conn):
+    if not sidValid(sid, conn):
+        print(sid,"is not a valid sid")
+        return False
+    else:
+        print("Song",sid,"selected")
+        action = input("Enter:\n1 to listen\n2to see more information agbout it\n3 to add it to a playlist\nanything else to return to the main menu\n")
+        if action == '1':
+            listen(uid, sid)
+        elif action == '2':
+            songInfo(sid)
+        elif action == '3':
+            addSongToPlaylist(uid, sid)
+        else:
+            return True
+#conn.close()
