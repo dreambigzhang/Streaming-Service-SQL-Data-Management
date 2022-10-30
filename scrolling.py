@@ -8,16 +8,9 @@ def clear(): # need to test this works on lab machine
     # for windows
     if name == 'nt':
         _ = system('cls')
- 
-    # for mac and linux(here, os.name is 'posix')
     else:
         _ = system('clear')
  
-
-# now call function we defined above
-#clear()
-
-#list1 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 def showFive(list1, i):
     listLen = len(list1)
     if listLen == 0:
