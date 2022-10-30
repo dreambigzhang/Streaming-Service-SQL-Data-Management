@@ -2,18 +2,11 @@ User action:
 "For each session, a session number unique for the user should be assigned by your system"
 -> primary key of sessions table is (uid, sno) so it's ok that sessions of different users have the
 same sno
-
 playlist pid alone is primary key, if new playlist, pid randomly generated + check if unique using query
-
 Input database name as userinput
-
 Don't make assumption on the format of IDs
-
 Lady Gaga is a match for lad
-
-
-search playlist: just match playlist name or check song title in the playlist too?
-
 user cannot have more than 1 active session
 
 don't forget to conn.commit() after every change to the database
+validate all Input
