@@ -14,13 +14,20 @@ VALUES (:uid, :sno, :sid, 1);
 */
 
 -- decide if user has already listened to this song in this session
+/*
 SELECT *
 FROM listen l
 WHERE l.uid = 'u2' AND l.sno = 24 AND l.sid = 12;
-
+*/
 -- update listen table when user already listend to the song
+/*
 UPDATE listen
 SET cnt = cnt+1
 WHERE uid = 'u2' AND sno = 24 AND sid = 12;
+*/
 
 
+
+SELECT *
+    FROM songs s
+    WHERE s.sid = 2;
