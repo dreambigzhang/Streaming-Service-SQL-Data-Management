@@ -1,11 +1,9 @@
 import sqlite3
 import getpass
 
-conn = sqlite3.connect('./a2.db')
-
-c = conn.cursor()
-
-def signup(): 
+def signup(conn): 
+    c = conn.cursor()
+    
     userID = None
     while userID == None or len(userID) > 20: 
 

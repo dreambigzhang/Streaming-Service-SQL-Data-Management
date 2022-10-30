@@ -1,11 +1,9 @@
 import sqlite3
 import getpass
 
-conn = sqlite3.connect('./a2.db')
-
-c = conn.cursor()
-
-def login(): # returns userID and artistID, at least one is not None
+def login(conn): # returns userID and artistID, at least one is not None
+    c = conn.cursor()
+    
     userID = None
     artistID = None
     while userID == None and artistID == None: 
