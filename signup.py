@@ -23,3 +23,5 @@ def signup(conn):
 
 
     c.execute("""INSERT INTO users VALUES (?,?,?);""",(userID,name,pwd))
+
+    return userID  # to start doing user actions instantly
