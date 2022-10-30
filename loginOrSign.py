@@ -5,5 +5,3 @@ def loginOrSign():
 
     print(mainMenuAction)
     return mainMenuAction  # returns 1 for login, 2 for sign up, all else for exit
-
-loginOrSign()
