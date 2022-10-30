@@ -19,7 +19,7 @@ def clear(): # need to test this works on lab machine
 
 def userMainMenu(uid, conn):
     c = conn.cursor()
-    clear()
+    
     print("------User Main Menu-------")
     action = input("Enter\n1 to start session\n2 to end session\n3 to search for songs and playlists\n4 to search for artists\nAnything else to logout\n")
     if action=='1':
@@ -33,12 +33,14 @@ def userMainMenu(uid, conn):
     elif action == '3':
         clear()
         if searchSongsAndPlaylists(uid, conn)==True:
+            clear()
             userMainMenu(uid, conn)
     elif action == '4':
         clear()
         if searchArtists(uid, conn)== True:
+            clear()
             userMainMenu(uid, conn)
     else:
         print("logout")
-
+clear()
 userMainMenu('u1', conn)

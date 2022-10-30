@@ -1,3 +1,6 @@
+import sqlite3
+from scrolling import scrolling
+conn = sqlite3.connect('./a2.db')
 from scrolling import scrolling
 def numOfMatch(str, keywords):
     matchCount = 0
@@ -79,6 +82,6 @@ def searchSongsAndPlaylists(uid, conn):
     
 
 #list1 = ["Kill", "You", "What", "Young", "Music"]
-#searchSongsAndPlaylists(list1)
+#searchSongsAndPlaylists('u1',conn)
 
 
