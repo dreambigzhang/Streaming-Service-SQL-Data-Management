@@ -1,16 +1,26 @@
-import sqlite3
-
 from createPlaylist import createPlaylist
-import startSession
+from playlistCheck import songInPlaylist, userOwnsPlaylist
+from startSession import startSession
+from os import system, name
 
+def clear(): # need to test this works on lab machine
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+ 
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
     
-def listen(uid, sid):
+def listen(uid, sid, conn):
+    c = conn.cursor()
+    clear()
     # beta test works
     # decide if user has session
-    sno = startSession.startSession(uid) # returns the sno of currently active session or newly created session
+    sno = startSession(uid, conn) # returns the sno of currently active session or newly created session
     # decide if user already listened to the song in the same session
     
-    if haveListened(uid, sid, sno):
+    if haveListened(uid, sid, sno, conn):
         # update table
         updateListen = '''
         UPDATE listen
@@ -23,9 +33,11 @@ def listen(uid, sid):
         VALUES (:uid, :sno, :sid, 1);'''
         c.execute(insertToListen, {'uid':uid, 'sno':sno, 'sid':sid})
     conn.commit()
-    print(uid, "listened to song", sid, "during session", sno)
+    clear()
+    print("*",uid, "listened to song", sid, "during session", sno)
+    input("Enter anything to return to the main menu: ")
+    return True
     
-    conn.close()
     
 def haveListened(uid, sid, sno, conn):
     c = conn.cursor()
@@ -41,7 +53,6 @@ def haveListened(uid, sid, sno, conn):
         return True
     else:
         return False
-    conn.close()
 #listen('u5', 6)
 '''
 More information for a song is the 
@@ -50,7 +61,7 @@ id, title and duration of the song as well as the
 names of playlists the song is in (if any)'''
 def songInfo(sid, conn):
     c = conn.cursor()
-    c.execute('PRAGMA foreign_keys=ON;')
+    clear()
     # beta test works
     # need to add later: see if sid input is valid sid
     songInfo = '''
@@ -81,13 +92,13 @@ def songInfo(sid, conn):
     print("Playlists", songDetail[0][1], "is in:")
     for playlist in playlists:
         print(playlist[0])
-    conn.close()
+    input("Enter anything to return to the main menu: ")
+    return True
 #songInfo(10)
 
 def addSongToPlaylist(uid, sid, conn):
-    c = conn.cursor()
-    c.execute('PRAGMA foreign_keys=ON;')
-    # beta test works
+    c = conn.cursor()    # beta test works
+    clear()
     getPlaylists = '''
     SELECT p.pid, p.title
     FROM playlists p
@@ -103,20 +114,30 @@ def addSongToPlaylist(uid, sid, conn):
         for playlist in playlists:
             print(playlist[0], playlist[1])
         pid = input("Enter the pid of playlist you wish to add the song to: ")
-        # add later: need to verify that pid is valid and belongs to user
+        
+        if userOwnsPlaylist(uid, pid, conn) == True: #need to verify that pid is valid and belongs to user
         # add later: need to check if song already in playlist
-        getSorder = '''
-        SELECT MAX(pl.sorder)+1
-        FROM plinclude pl
-        WHERE pl.pid = :pid;'''
-        c.execute(getSorder, {'pid': pid})
-        sorder = c.fetchone()[0]
-        insertIntoPlaylist = '''
-        INSERT INTO plinclude VALUES (:pid, :sid, :sorder);
-        '''
-        c.execute(insertIntoPlaylist, {'pid': pid, 'sid': sid, 'sorder': sorder})
-        conn.commit()
-        print("Song", sid, "added to playlist", pid, "at position", sorder)
+            if songInPlaylist(pid, sid, conn):
+                print("This song is already in the selected playlist")
+                input("Enter anything to return to the main menu: ")
+                return True
+            getSorder = '''
+            SELECT ifnull(MAX(pl.sorder),0)+1
+            FROM plinclude pl
+            WHERE pl.pid = :pid;'''
+            c.execute(getSorder, {'pid': pid})
+            sorder = c.fetchone()[0]
+            insertIntoPlaylist = '''
+            INSERT INTO plinclude VALUES (:pid, :sid, :sorder);
+            '''
+            c.execute(insertIntoPlaylist, {'pid': pid, 'sid': sid, 'sorder': sorder})
+            conn.commit()
+            print("Song", sid, "added to playlist", pid, "at position", sorder)
+        else:
+            print("*You don't own the playlist entered and cannot add songs to it!")
+    input("Enter anything to return to the main menu: ")
+    return True
+
 def sidValid(sid,conn):
     c = conn.cursor()
     query = '''
@@ -136,13 +157,16 @@ def songActions(uid, sid, conn):
         return False
     else:
         print("Song",sid,"selected")
-        action = input("Enter:\n1 to listen\n2to see more information agbout it\n3 to add it to a playlist\nanything else to return to the main menu\n")
+        action = input("Enter:\n1 to listen\n2 to see more information about it\n3 to add it to a playlist\nanything else to return to the main menu\n")
         if action == '1':
-            listen(uid, sid)
+            if listen(uid, sid, conn)== True:
+                return True
         elif action == '2':
-            songInfo(sid)
+            if songInfo(sid, conn) == True:
+                return True
         elif action == '3':
-            addSongToPlaylist(uid, sid)
+            if addSongToPlaylist(uid, sid, conn)== True:
+                return True
         else:
             return True
-#conn.close()
+
