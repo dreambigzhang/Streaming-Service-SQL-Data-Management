@@ -9,11 +9,8 @@ conn = sqlite3.connect('./a2.db')
 from os import system, name
 
 def clear(): # need to test this works on lab machine
-    # for windows
     if name == 'nt':
         _ = system('cls')
- 
-    # for mac and linux(here, os.name is 'posix')
     else:
         _ = system('clear')
 
@@ -39,10 +36,12 @@ def userMainMenu(uid, conn):
         if searchArtists(uid, conn)== True:
             userMainMenu(uid, conn)
     elif action == '5':
-        print("logout")
+        clear()
+        print("logged out")
         return '5' # should return to main screen
     else: 
+        clear()
         endSession(uid,conn)
-    return  
+    return
 clear()
 userMainMenu('u1', conn)
