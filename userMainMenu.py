@@ -44,4 +44,5 @@ def userMainMenu(uid, conn):
         endSession(uid,conn)
     return
 clear()
-userMainMenu('u1', conn)
+if __name__ == "__main__":
+    userMainMenu('u1', conn)
