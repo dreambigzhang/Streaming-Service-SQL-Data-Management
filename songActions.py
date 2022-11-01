@@ -154,7 +154,8 @@ def sidValid(sid,conn):
 def songActions(uid, sid, conn):
     if not sidValid(sid, conn):
         print(sid,"is not a valid sid")
-        return False
+        input("Enter anything to return to the main menu")
+        return True
     else:
         print("Song",sid,"selected")
         action = input("Enter:\n1 to listen\n2 to see more information about it\n3 to add it to a playlist\nanything else to return to the main menu\n")
