@@ -4,7 +4,7 @@ from startSession import startSession
 from endSession import endSession
 from searchSongsAndPlaylists import searchSongsAndPlaylists
 from searchArtists import searchArtists
-conn = sqlite3.connect('./new.db')
+
 
 from os import system, name
 
@@ -42,7 +42,9 @@ def userMainMenu(uid, conn):
     else: 
         clear()
         endSession(uid,conn)
-    return
+        conn.close()
+        return
 
 if __name__ == "__main__":
+    conn = sqlite3.connect('./new.db')
     userMainMenu('u1', conn)
