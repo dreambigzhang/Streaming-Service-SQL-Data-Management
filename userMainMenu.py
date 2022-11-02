@@ -15,7 +15,6 @@ def clear(): # need to test this works on lab machine
         _ = system('clear')
 
 def userMainMenu(uid, conn):
-    c = conn.cursor()
     clear()
     print("------User Main Menu-------")
     action = input("Enter\n1 to start session\n2 to end session\n3 to search for songs and playlists\n4 to search for artists\n5 to logout\nAnything else to exit program \n").strip()
@@ -42,8 +41,8 @@ def userMainMenu(uid, conn):
     else: 
         clear()
         endSession(uid,conn)
-        conn.close()
-        return
+        return -1
+    return 
 
 if __name__ == "__main__":
     conn = sqlite3.connect('./new.db')

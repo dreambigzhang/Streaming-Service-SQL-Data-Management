@@ -10,7 +10,7 @@ def login(conn): # returns userID and artistID, at least one is not None
     while userID == None and artistID == None and back == False: 
             #take ID and password
             
-            ID = input("Enter ID or input -1 to go back: ")  # userID and artistID will be None
+            ID = input("Enter ID or input -1 to go back: ").lower()  # userID and artistID will be None
             if ID.strip() == '-1':
                 break
             pwd = getpass.getpass(prompt='Enter your password: ', stream= None)
@@ -19,7 +19,7 @@ def login(conn): # returns userID and artistID, at least one is not None
             c.execute('''
                 SELECT u.uid 
                 FROM users u
-                WHERE u.uid = ? and u.pwd = ?;'''
+                WHERE lower(u.uid) = ? and u.pwd = ?;'''
                 ,(ID,pwd))
             
             # check if valid user ID
@@ -31,7 +31,7 @@ def login(conn): # returns userID and artistID, at least one is not None
             c.execute('''
                 SELECT a.aid 
                 FROM artists a 
-                WHERE a.aid = ? and a.pwd = ?;'''
+                WHERE lower(a.aid) = ? and a.pwd = ?;'''
                 ,(ID,pwd))
             
             # check if valid user ID
