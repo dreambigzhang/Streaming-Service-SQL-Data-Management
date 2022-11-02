@@ -108,24 +108,42 @@ def addSong(aid, conn):
 
     c.execute(insertSong)
 
+    if False in [isValidAid(i, conn) for i in ids]:
+        print("ERROR: you must enter valid aids")
+        addPerformer(ids[0], sid, conn)
+        input("press enter to continue")
+        return
+
     for id in ids:
-        insertPerform = f"""
-        INSERT INTO perform 
-        VALUES ("{id}", {sid});
-        """
-        c.execute(insertPerform)
+        addPerformer(id, sid, conn)
     conn.commit()
     input("press enter to continue")
 
+def addPerformer(aid, sid, conn):
+
+    c = conn.cursor()
+    insertPerform = f"""
+    INSERT INTO perform 
+    VALUES ("{aid}", {sid});
+    """
+    c.execute(insertPerform)
+    conn.commit()
+
+def isValidAid(aid, conn):
+
+    c = conn.cursor()
+    getArtist = f"""
+    SELECT *
+    FROM artists
+    WHERE aid = "{aid}";
+    """
+
+    c.execute(getArtist)
+    return bool(c.fetchone())
+
 def getUniqueSid(conn):
 
-    allSids = getAllSids(conn)
-    sid = allSids[0]
-
-    while sid in allSids:
-        sid = random.randint(1, 2 * len(allSids))
-    
-    return sid
+    return max(getAllSids(conn)) + 1
 
 def getAllSids(conn):
 
@@ -156,4 +174,7 @@ def isNewSong(aid, title, duration, conn):
 if __name__ == "__main__":
     #topThreePlaylists("a10", sqlite3.connect("./a2.db"))
     #print(isNewSong("a1", "Applause", 212, sqlite3.connect("./a2.db")))
-    print(type(getAllSids(sqlite3.connect("./new.db"))[0]))
+    #print(type(getAllSids(sqlite3.connect("./new.db"))[0]))
+    #print(isValidAid("a10", sqlite3.connect("./new.db")))
+    #addSong("a10", sqlite3.connect("./new.db"))
+    pass
