@@ -7,7 +7,9 @@ def signup(conn):
     userID = None
     while userID == None or len(userID) > 20: 
             
-        userID = input("Input a unique ID of size 4 or less: ")
+        userID = input("Input a unique ID of size 4 or less, or input -1 to go back: ").lower()
+        if userID == '-1':
+            return
         while len(userID) > 4: 
             print("The ID is too large, try again")
             userID = input("Input a unique ID of size 4 or less: ")
@@ -17,7 +19,7 @@ def signup(conn):
         c.execute('''
             SELECT u.uid
             FROM users u 
-            WHERE u.uid = ?;'''
+            WHERE lower(u.uid) = ?;'''
             ,(userID,))
         validNewID = c.fetchone()
         if validNewID is not None: 
