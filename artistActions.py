@@ -10,6 +10,7 @@ def artistsMainMenu(aid, conn):
                     1 add a song\n          \
                     2 find top fans\n       \
                     3 find top playlists\n  \
+                    4 to logout\n           \
                     Anything else to exit the program\n")
 
     if action == '1':
@@ -24,6 +25,10 @@ def artistsMainMenu(aid, conn):
         clear()
         displayPlaylists(aid, conn)
         artistsMainMenu(aid, conn)
+    elif action =='4':
+        clear()
+        print("logged out")
+        return '4' # should return to main screen
     else:
         return
 

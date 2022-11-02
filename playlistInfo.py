@@ -1,7 +1,6 @@
 import sqlite3
 from os import system, name
 from songActions import songActions
-conn = sqlite3.connect('./a2.db')
 
 def clear(): # need to test this works on lab machine
     # for windows
