@@ -1,6 +1,5 @@
 import sqlite3
 from scrolling import scrolling
-conn = sqlite3.connect('./a2.db')
 
 def numOfMatch(str, keywords):
     matchCount = 0
