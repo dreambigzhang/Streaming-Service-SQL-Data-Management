@@ -1,7 +1,7 @@
 import sqlite3
-
+import sys
 def dbEntry():
     # should returns correct name of database
-    db = input("Input name of database file: ")
+    db = sys.argv[1]
     conn = sqlite3.connect('./' + db)
     return conn
