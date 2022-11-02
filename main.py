@@ -31,12 +31,14 @@ def main():
         
         if action == '1': 
             possibleLogout = userMainMenu(uid,conn) # userMainMenu returns 5 if logout, returns None otherwise
-            if possibleLogout == '5': 
+            if possibleLogout == '5':  # user logs out with 5
                 main()
                 return
         else: 
-            artistsMainMenu(aid,conn)
-            return
+            possibleLogout = artistsMainMenu(aid,conn)
+            if possibleLogout == '4':  # artist logs out with 4
+                main()
+                return
     elif uid != None: 
         possibleLogout = userMainMenu(uid,conn)
         if possibleLogout == '5':
@@ -44,7 +46,9 @@ def main():
             return
     else: 
         artistsMainMenu(aid,conn)
-        return
+        if possibleLogout == '4':
+                main()
+                return
     
 
 main()
