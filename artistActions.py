@@ -31,19 +31,20 @@ def displayUsers(aid, conn):
 
     print("------Top Three Users------")
     users = topThreeUsers(aid, conn)
-
-    for i in range(len(users)):
-        print(str(i + 1) + ". " + users[i][0])
+    if users != None:
+        for i in range(len(users)):
+            #print(users[i])
+            print(users[i][0])
 
     input("press enter to continue")
 
 def displayPlaylists(aid, conn):
 
-    print("------Top Three Users------")
+    print("------Top Three Playlists------")
     playlists = topThreePlaylists(aid, conn)
-
-    for i in range(len(playlists)):
-        print(str(i + 1) + ". " + playlists[i][0])
+    if playlists!= None:
+        for i in range(len(playlists)):
+            print(playlists[i][0])
 
     input("press enter to continue")
 
@@ -63,8 +64,7 @@ def topThreeUsers(aid, conn):
 
     c.execute(getTopUsers)
     topThree = c.fetchall()
-    for user in topThree:
-        print(user)
+    return topThree
 
 def topThreePlaylists(aid, conn):
 
@@ -82,8 +82,7 @@ def topThreePlaylists(aid, conn):
 
     c.execute(getTopPlaylists)
     topPlaylists = c.fetchall()
-    for i in topPlaylists:
-        print(i)
+    return topPlaylists
 
 
 def addSong(aid, conn):
@@ -94,8 +93,10 @@ def addSong(aid, conn):
     duration = int(input("Enter the duration: "))
 
     if not isNewSong(aid, title, duration, conn):
-        print("ERROR: Song already exists")
-        return
+        print("Song with the same title and duration already exists")
+        choice = input("Enter\n1 to proceed with adding the song\nAnything else to reject it\n")
+        if choice!= '1':
+            return
     
     ids = [aid] + input("Enter the aids of any additional artists separated by spaces: ").split()
     sid = getUniqueSid(conn)
