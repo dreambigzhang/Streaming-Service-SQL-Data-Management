@@ -4,6 +4,7 @@ from loginOrSign import loginOrSign
 from login import login
 from signup import signup
 from userMainMenu import userMainMenu
+from artistActions import artistsMainMenu
 conn = dbEntry()
 
 def main(): 
@@ -34,7 +35,7 @@ def main():
                 main()
                 return
         else: 
-            # put artist main menu here
+            artistsMainMenu(aid,conn)
             return
     elif uid != None: 
         possibleLogout = userMainMenu(uid,conn)
@@ -42,7 +43,7 @@ def main():
             main()
             return
     else: 
-        # put artist main menu here
+        artistsMainMenu(aid,conn)
         return
     
 

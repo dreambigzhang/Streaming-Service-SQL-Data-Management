@@ -22,8 +22,12 @@ def searchSongsAndPlaylists(uid, conn):
     c = conn.cursor()
 
     print("------Search for songs and playlists-----")
-    keywords = input("Enter keywords separated by spaces: ")
-    keywords = keywords.split()
+    keywords = []
+    numOfKeywords = int(input("How many keywords: "))
+    print("Input the keywords (press enter after every keyword)")
+    for i in range(numOfKeywords):
+        keyword = input()
+        keywords.append(keyword)
     '''
     keywords is a list of keywords
     '''
