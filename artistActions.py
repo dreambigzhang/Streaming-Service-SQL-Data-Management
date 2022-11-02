@@ -91,14 +91,13 @@ def addSong(aid, conn):
     c = conn.cursor()
     print("------Add a new song------")
     title = input("Enter the title of the song: ")
-    duration = int(input("Enter the duration"))
+    duration = int(input("Enter the duration: "))
 
     if not isNewSong(aid, title, duration, conn):
         print("ERROR: Song already exists")
         return
     
-    ids = [aid] + input("enter the aids of any additional artists \
-        separated by spaces: ").split()
+    ids = [aid] + input("Enter the aids of any additional artists separated by spaces: ").split()
     sid = getUniqueSid(conn)
 
     insertSong = f"""
@@ -114,7 +113,7 @@ def addSong(aid, conn):
         VALUES ("{id}", {sid});
         """
         c.execute(insertPerform)
-    
+    conn.commit()
     input("press enter to continue")
 
 def getUniqueSid(conn):
@@ -156,4 +155,4 @@ def isNewSong(aid, title, duration, conn):
 if __name__ == "__main__":
     #topThreePlaylists("a10", sqlite3.connect("./a2.db"))
     #print(isNewSong("a1", "Applause", 212, sqlite3.connect("./a2.db")))
-    print(type(getAllSids(sqlite3.connect("./a2.db"))[0]))
+    print(type(getAllSids(sqlite3.connect("./new.db"))[0]))
