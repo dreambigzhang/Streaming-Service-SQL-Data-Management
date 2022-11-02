@@ -4,7 +4,7 @@ from startSession import startSession
 from endSession import endSession
 from searchSongsAndPlaylists import searchSongsAndPlaylists
 from searchArtists import searchArtists
-conn = sqlite3.connect('./a2.db')
+conn = sqlite3.connect('./new.db')
 
 from os import system, name
 
