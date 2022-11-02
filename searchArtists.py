@@ -1,11 +1,10 @@
-from scrolling import scrolling
 import sqlite3
 
 # import only system from os
 
 from os import system, name
-from playlistInfo import playlistInfo
-from songActions import songActions
+#from playlistInfo import playlistInfo
+#from songActions import songActions
 from artistInfo import artistScrolling
 
 def clear(): # need to test this works on lab machine
