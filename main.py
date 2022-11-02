@@ -45,7 +45,7 @@ def main():
             main()
             return
     else: 
-        artistsMainMenu(aid,conn)
+        possibleLogout = artistsMainMenu(aid,conn)
         if possibleLogout == '4':
                 main()
                 return
