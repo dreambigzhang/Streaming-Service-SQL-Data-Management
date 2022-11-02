@@ -25,7 +25,7 @@ def artistsMainMenu(aid, conn):
         print("logged out")
         return '4' # should return to main screen
     else:
-        return
+        return -1
 
 def displayUsers(aid, conn):
 

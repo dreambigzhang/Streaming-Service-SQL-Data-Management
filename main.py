@@ -44,11 +44,17 @@ def main():
         if possibleLogout == '5':
             main()
             return
+        elif possibleLogout == '-1':
+            conn.close()
+            return
     else: 
         possibleLogout = artistsMainMenu(aid,conn)
         if possibleLogout == '4':
                 main()
                 return
+        elif possibleLogout == '-1':
+            conn.close()
+            return
     
 
 main()
