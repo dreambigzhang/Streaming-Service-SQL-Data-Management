@@ -6,12 +6,7 @@ from scrolling import clear
 def artistsMainMenu(aid, conn):
 
     print("------Artist Main Menu-------")
-    action = input("Enter\n                 \
-                    1 add a song\n          \
-                    2 find top fans\n       \
-                    3 find top playlists\n  \
-                    4 to logout\n           \
-                    Anything else to exit the program\n")
+    action = input("Enter\n1 add a song\n2 find top fans\n3 find top playlists\n4 to logout\nAnything else to exit the program\n")
 
     if action == '1':
         clear()
