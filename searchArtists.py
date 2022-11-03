@@ -24,8 +24,11 @@ def numOfMatch(str, keywords):
 def searchArtists(uid, conn):
     # get the keywords from the user
     c = conn.cursor()
+    keywords = ""
     print("-----Search for artists-----")
-    keywords = input("Enter keywords separated by spaces: ")
+    while keywords == "":
+        keywords = input("Enter keywords separated by spaces: ")
+    
     keywords = keywords.split()
     #keywords is a list of keywords
     
