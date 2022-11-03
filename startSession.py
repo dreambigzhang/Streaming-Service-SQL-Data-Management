@@ -27,7 +27,7 @@ def startSession(uid, conn):
         return sno
     else:
         getSno = '''
-        SELECT MAX(se.sno)+1
+        SELECT MAX(ifnull(se.sno,0))+1
         FROM sessions se
         WHERE se.uid = :uid;
         '''
