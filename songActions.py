@@ -108,7 +108,8 @@ def addSongToPlaylist(uid, sid, conn):
     playlists = c.fetchall()
     if playlists==[]:
         print("You have no playlists")
-        createPlaylist(uid)
+        createPlaylist(uid, conn)
+        addSongToPlaylist(uid, sid, conn)
     else:
         print("Here are your playlists")
         for playlist in playlists:
