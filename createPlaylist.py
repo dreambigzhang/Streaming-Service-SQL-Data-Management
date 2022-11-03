@@ -12,6 +12,6 @@ def createPlaylist(uid, conn):
     c.execute(insertPlaylist, {'pid':pid, 'title':title, 'uid': uid})
     conn.commit()
     print("New playlist", pid, title, "created by", uid)
-
+    
 
 #createPlaylist('u1')
