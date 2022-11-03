@@ -14,7 +14,7 @@ def sessionActive(uid, conn):
         sno = activeSession[0][0]
         return sno
     else:
-        return False
+        return None
 
 def startSession(uid, conn): 
     c = conn.cursor()
@@ -22,7 +22,7 @@ def startSession(uid, conn):
     # beta test works
     # check if user already has active session
     sno = sessionActive(uid, conn) # false if there's no active session otherwise get sno
-    if sno!= False:
+    if sno!= None:
         print("*There is already an active session", sno)
         return sno
     else:
