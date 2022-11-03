@@ -179,7 +179,7 @@ def isNewSong(aid, title, duration, conn):
     return not bool(c.fetchone())
 
 if __name__ == "__main__":
-    #sqlite3.connect("./new.db")
+    #db = sqlite3.connect("./new.db")
     #topThreePlaylists("a10", sqlite3.connect("./a2.db"))
     #print(isNewSong("a1", "Applause", 212, sqlite3.connect("./a2.db")))
     #print(type(getAllSids(sqlite3.connect("./new.db"))[0]))
