@@ -11,15 +11,15 @@ def artistsMainMenu(aid, conn):
     if action == '1':
         clear()
         addSong(aid, conn)
-        artistsMainMenu(aid, conn)
+        return artistsMainMenu(aid, conn)
     elif action == '2':
         clear()
         displayUsers(aid, conn)
-        artistsMainMenu(aid, conn)
+        return artistsMainMenu(aid, conn)
     elif action == '3':
         clear()
         displayPlaylists(aid, conn)
-        artistsMainMenu(aid, conn)
+        return artistsMainMenu(aid, conn)
     elif action =='4':
         clear()
         print("logged out")
