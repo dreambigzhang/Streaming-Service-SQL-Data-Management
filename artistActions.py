@@ -46,14 +46,14 @@ def topThreeUsers(aid, conn):
     SELECT u.*
     FROM songs s, listen l, perform p, users u
     WHERE s.sid = l.sid AND s.sid = p.sid
-    AND p.aid = "{aid}"
+    AND p.aid = ?
     AND l.uid = u.uid
     GROUP BY l.uid
     ORDER BY SUM(s.duration * l.cnt) DESC
     LIMIT 3;
     """
 
-    c.execute(getTopUsers)
+    c.execute(getTopUsers, (aid,))
     topUsers = c.fetchall()
     return topUsers
 
@@ -65,13 +65,13 @@ def topThreePlaylists(aid, conn):
     SELECT p.*
     FROM plinclude pl, perform pr, playlists p
     WHERE pl.sid = pr.sid AND p.pid = pl.pid
-    AND pr.aid = "{aid}"
+    AND pr.aid = ?
     GROUP BY pl.pid
     ORDER BY COUNT(pl.sid) DESC
     LIMIT 3
     """
 
-    c.execute(getTopPlaylists)
+    c.execute(getTopPlaylists, (aid,))
     topPlaylists = c.fetchall()
     topPlaylists = [list(i) for i in topPlaylists]
     topPlaylists = [[str(i[0])] + i[1:] for i in topPlaylists]
@@ -83,6 +83,10 @@ def addSong(aid, conn):
     c = conn.cursor()
     print("------Add a new song------")
     title = input("Enter the title of the song: ")
+    if title == "":
+        print("ERROR: title cannot be empty")
+        input("press enter to continue")
+        return
     try:
         duration = int(input("Enter the duration: "))
     except:
@@ -98,14 +102,19 @@ def addSong(aid, conn):
             return
     
     ids = [aid] + input("Enter the aids of any additional artists separated by spaces: ").split()
+    if aid in ids[1:]:
+        print("ERROR: cannot use own aid as additional aid")
+        input("press enter to continue")
+        return
+
     sid = getUniqueSid(conn)
 
     insertSong = f"""
     INSERT INTO songs 
-    VALUES ({sid}, "{title}", {duration});
+    VALUES (?, ?, ?);
     """
 
-    c.execute(insertSong)
+    c.execute(insertSong, (sid, title, duration))
 
     if False in [isValidAid(i, conn) for i in ids]:
         print("ERROR: you must enter valid aids")
@@ -123,9 +132,9 @@ def addPerformer(aid, sid, conn):
     c = conn.cursor()
     insertPerform = f"""
     INSERT INTO perform 
-    VALUES ("{aid}", {sid});
+    VALUES (?, ?);
     """
-    c.execute(insertPerform)
+    c.execute(insertPerform, (aid, sid))
     conn.commit()
 
 def isValidAid(aid, conn):
@@ -134,10 +143,10 @@ def isValidAid(aid, conn):
     getArtist = f"""
     SELECT *
     FROM artists
-    WHERE aid = "{aid}";
+    WHERE aid = ?;
     """
 
-    c.execute(getArtist)
+    c.execute(getArtist, (aid,))
     return bool(c.fetchone())
 
 def getUniqueSid(conn):
@@ -162,14 +171,15 @@ def isNewSong(aid, title, duration, conn):
     SELECT *
     FROM artists a, songs s, perform p
     WHERE a.aid = p.aid AND s.sid = p.sid
-    AND title = "{title}" AND duration = {duration}
-    AND a.aid = "{aid}";
+    AND title = ? AND duration = ?
+    AND a.aid = ?;
     """
 
-    c.execute(songQuery)
+    c.execute(songQuery, (title, duration, aid))
     return not bool(c.fetchone())
 
 if __name__ == "__main__":
+    #sqlite3.connect("./new.db")
     #topThreePlaylists("a10", sqlite3.connect("./a2.db"))
     #print(isNewSong("a1", "Applause", 212, sqlite3.connect("./a2.db")))
     #print(type(getAllSids(sqlite3.connect("./new.db"))[0]))
