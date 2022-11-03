@@ -87,6 +87,10 @@ def searchArtists(uid, conn):
         artistDict[aid][-1]+= numOfMatch(aName, keywords)
     #print(artistDict)
     artistList = [[i] + artistDict[i] for i in artistDict]
+    if artistList == []:
+        print("No results")
+        input("Enter anything to return to the user main menu")
+        return True
     #print(artistList)
     if artistScrolling(uid, artistList, 0, conn)==True:
         return True
