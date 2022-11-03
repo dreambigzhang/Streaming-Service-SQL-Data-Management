@@ -1,12 +1,11 @@
 
 import sqlite3
-import random
 from scrolling import clear
 
 def artistsMainMenu(aid, conn):
 
     print("------Artist Main Menu-------")
-    action = input("Enter\n1 add a song\n2 find top fans\n3 find top playlists\n4 to logout\nAnything else to exit the program\n")
+    action = input("Enter\n1 add a song\n2 find top fans and playlists\n3 to logout\nAnything else to exit the program\n")
 
     if action == '1':
         clear()
@@ -14,37 +13,28 @@ def artistsMainMenu(aid, conn):
         return artistsMainMenu(aid, conn)
     elif action == '2':
         clear()
-        displayUsers(aid, conn)
+        displayUsersPlaylists(aid, conn)
         return artistsMainMenu(aid, conn)
     elif action == '3':
-        clear()
-        displayPlaylists(aid, conn)
-        return artistsMainMenu(aid, conn)
-    elif action =='4':
         clear()
         print("logged out")
         return '4' # should return to main screen
     else:
         return -1
 
-def displayUsers(aid, conn):
+def displayUsersPlaylists(aid, conn):
 
     print("------Top Three Users------")
     users = topThreeUsers(aid, conn)
     if users != None:
         for i in range(len(users)):
-            #print(users[i])
-            print(users[i][0])
+            print(" | ".join(users[i]))
 
-    input("press enter to continue")
-
-def displayPlaylists(aid, conn):
-
-    print("------Top Three Playlists------")
+    print("\n------Top Three Playlists------")
     playlists = topThreePlaylists(aid, conn)
     if playlists!= None:
         for i in range(len(playlists)):
-            print(playlists[i][0])
+            print(" | ".join(playlists[i]))
 
     input("press enter to continue")
 
@@ -53,35 +43,38 @@ def topThreeUsers(aid, conn):
     c = conn.cursor()
 
     getTopUsers = f"""
-    SELECT l.uid
-    FROM songs s, listen l, artists a, perform p
+    SELECT u.*
+    FROM songs s, listen l, perform p, users u
     WHERE s.sid = l.sid AND s.sid = p.sid
-    AND a.aid = p.aid AND a.aid = "{aid}"
+    AND p.aid = "{aid}"
+    AND l.uid = u.uid
     GROUP BY l.uid
     ORDER BY SUM(s.duration * l.cnt) DESC
     LIMIT 3;
     """
 
     c.execute(getTopUsers)
-    topThree = c.fetchall()
-    return topThree
+    topUsers = c.fetchall()
+    return topUsers
 
 def topThreePlaylists(aid, conn):
 
     c = conn.cursor()
 
     getTopPlaylists = f"""
-    SELECT pl.pid
-    FROM plinclude pl, perform pr
-    WHERE pl.sid = pr.sid
+    SELECT p.*
+    FROM plinclude pl, perform pr, playlists p
+    WHERE pl.sid = pr.sid AND p.pid = pl.pid
     AND pr.aid = "{aid}"
     GROUP BY pl.pid
     ORDER BY COUNT(pl.sid) DESC
-    LIMIT 3;
+    LIMIT 3
     """
 
     c.execute(getTopPlaylists)
     topPlaylists = c.fetchall()
+    topPlaylists = [list(i) for i in topPlaylists]
+    topPlaylists = [[str(i[0])] + i[1:] for i in topPlaylists]
     return topPlaylists
 
 
@@ -143,10 +136,6 @@ def isValidAid(aid, conn):
 
 def getUniqueSid(conn):
 
-    return max(getAllSids(conn)) + 1
-
-def getAllSids(conn):
-
     c = conn.cursor()
     sidQuery = """
     SELECT sid
@@ -154,7 +143,10 @@ def getAllSids(conn):
     """
 
     c.execute(sidQuery)
-    return [i[0] for i in c.fetchall()]
+    sids = c.fetchall()
+    if sids == None:
+        return 1
+    return max([i[0] for i in sids]) + 1
 
 
 def isNewSong(aid, title, duration, conn):
@@ -177,4 +169,6 @@ if __name__ == "__main__":
     #print(type(getAllSids(sqlite3.connect("./new.db"))[0]))
     #print(isValidAid("a10", sqlite3.connect("./new.db")))
     #addSong("a10", sqlite3.connect("./new.db"))
+    artistsMainMenu("a10", sqlite3.connect("./new.db"))
+
     pass

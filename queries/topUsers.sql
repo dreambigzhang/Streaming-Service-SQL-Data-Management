@@ -1,18 +1,21 @@
 SELECT l.uid
-FROM songs s, listen l, artists a, perform p
+FROM songs s, listen l, perform p
 WHERE s.sid = l.sid AND s.sid = p.sid
-AND a.aid = p.aid AND a.aid = "a10"
+AND p.aid = "a10"
 GROUP BY l.uid
 ORDER BY SUM(s.duration * l.cnt) DESC
 LIMIT 3
 
-SELECT pl.pid
-FROM plinclude pl, perform pr
-WHERE pl.sid = pr.sid
+SELECT p.*
+FROM plinclude pl, perform pr, playlists p
+WHERE pl.sid = pr.sid AND p.pid = pl.pid
 AND pr.aid = "a11"
 GROUP BY pl.pid
 ORDER BY COUNT(pl.sid) DESC
 LIMIT 3
+
+SELECT *
+from plinclude
 
 SELECT *
 FROM artists a, songs s, perform p
