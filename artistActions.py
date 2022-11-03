@@ -3,10 +3,13 @@ import sqlite3
 from scrolling import clear
 
 def artistsMainMenu(aid, conn):
+    # allows the artist to add songs and find top fans/playlists
 
+    # display options
     print("------Artist Main Menu-------")
     action = input("Enter\n1 add a song\n2 find top fans and playlists\n3 to logout\nAnything else to exit the program\n")
 
+    # do the corresponding action
     if action == '1':
         clear()
         addSong(aid, conn)
@@ -23,13 +26,16 @@ def artistsMainMenu(aid, conn):
         return -1
 
 def displayUsersPlaylists(aid, conn):
+    # display top fans and playlists
 
+    # display top three users
     print("------Top Three Users------")
     users = topThreeUsers(aid, conn)
     if users != None:
         for i in range(len(users)):
             print(" | ".join(users[i]))
 
+    # display top three playlists
     print("\n------Top Three Playlists------")
     playlists = topThreePlaylists(aid, conn)
     if playlists!= None:
@@ -39,9 +45,11 @@ def displayUsersPlaylists(aid, conn):
     input("press enter to continue")
 
 def topThreeUsers(aid, conn):
+    # find top three users
 
     c = conn.cursor()
 
+    # query for top users
     getTopUsers = f"""
     SELECT u.*
     FROM songs s, listen l, perform p, users u
@@ -53,14 +61,17 @@ def topThreeUsers(aid, conn):
     LIMIT 3;
     """
 
+    # execute query and return top users
     c.execute(getTopUsers, (aid,))
     topUsers = c.fetchall()
     return topUsers
 
 def topThreePlaylists(aid, conn):
+    # find top three playlists
 
     c = conn.cursor()
 
+    # query for top playlists
     getTopPlaylists = f"""
     SELECT p.*
     FROM plinclude pl, perform pr, playlists p
@@ -71,6 +82,7 @@ def topThreePlaylists(aid, conn):
     LIMIT 3
     """
 
+    # execute query and return top playlists
     c.execute(getTopPlaylists, (aid,))
     topPlaylists = c.fetchall()
     topPlaylists = [list(i) for i in topPlaylists]
@@ -79,14 +91,19 @@ def topThreePlaylists(aid, conn):
 
 
 def addSong(aid, conn):
+    # add new song
 
     c = conn.cursor()
     print("------Add a new song------")
+
+    # get song title and validate
     title = input("Enter the title of the song: ")
     if title == "":
         print("ERROR: title cannot be empty")
         input("press enter to continue")
         return
+
+    # get duration and validate
     try:
         duration = int(input("Enter the duration: "))
     except:
@@ -94,19 +111,21 @@ def addSong(aid, conn):
         input("press enter to continue")
         return
 
-
+    # prompt the user to add or reject new song if title and duration are the same 
     if not isNewSong(aid, title, duration, conn):
         print("Song with the same title and duration already exists")
         choice = input("Enter\n1 to proceed with adding the song\nAnything else to reject it\n")
         if choice!= '1':
             return
     
+    # get any additional aids and check that aids do not conflict
     ids = [aid] + input("Enter the aids of any additional artists separated by spaces: ").split()
     if aid in ids[1:]:
         print("ERROR: cannot use own aid as additional aid")
         input("press enter to continue")
         return
 
+    # Add new song into songs table
     sid = getUniqueSid(conn)
 
     insertSong = f"""
@@ -116,18 +135,22 @@ def addSong(aid, conn):
 
     c.execute(insertSong, (sid, title, duration))
 
+    # check that all aids are valid
     if False in [isValidAid(i, conn) for i in ids]:
         print("ERROR: you must enter valid aids")
         addPerformer(ids[0], sid, conn)
         input("press enter to continue")
         return
 
+    # insert all aids into perform table
     for id in ids:
         addPerformer(id, sid, conn)
+    
     conn.commit()
     input("press enter to continue")
 
 def addPerformer(aid, sid, conn):
+    # add new entry into perfrom table
 
     c = conn.cursor()
     insertPerform = f"""
@@ -138,6 +161,7 @@ def addPerformer(aid, sid, conn):
     conn.commit()
 
 def isValidAid(aid, conn):
+    # check that any given aid is in the database
 
     c = conn.cursor()
     getArtist = f"""
@@ -150,6 +174,7 @@ def isValidAid(aid, conn):
     return bool(c.fetchone())
 
 def getUniqueSid(conn):
+    # get a unique sid different from all the ones in the database
 
     c = conn.cursor()
     sidQuery = """
@@ -165,6 +190,7 @@ def getUniqueSid(conn):
 
 
 def isNewSong(aid, title, duration, conn):
+    # check that any given song does not exist in the database
 
     c = conn.cursor()
     songQuery = f"""
