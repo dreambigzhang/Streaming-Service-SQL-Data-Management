@@ -19,14 +19,12 @@ def tupleToList(listOfTuples): # copy a list of tuple to a list of lists
 
 def searchSongsAndPlaylists(uid, conn):
     c = conn.cursor()
-
+    keywords = ""
     print("------Search for songs and playlists-----")
-    keywords = []
-    numOfKeywords = int(input("How many keywords: "))
-    print("Input the keywords (press enter after every keyword)")
-    for i in range(numOfKeywords):
-        keyword = input()
-        keywords.append(keyword)
+    while keywords == "":
+        keywords = input("Enter keywords separated by spaces: ")
+
+    keywords = keywords.split()
     '''
     keywords is a list of keywords
     '''
