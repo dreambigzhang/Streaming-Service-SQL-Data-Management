@@ -7,6 +7,7 @@ def endSession(uid, conn):
     # check if user already has active session
     sno = sessionActive(uid, conn) # false if there's no active session otherwise get sno
     if sno== False:
+        print("You have no active session")
         return None
     else:
         endSession = '''
