@@ -22,6 +22,7 @@ def numOfMatch(str, keywords):
     return matchCount
 
 def searchArtists(uid, conn):
+    # search artists using the keywords entered
     # get the keywords from the user
     c = conn.cursor()
     keywords = ""
@@ -94,8 +95,6 @@ def searchArtists(uid, conn):
     #print(artistList)
     if artistScrolling(uid, artistList, 0, conn)==True:
         return True
-    
-    
 
 if __name__ == "__main__":
     searchArtists("u1", sqlite3.connect("./a2.db"))

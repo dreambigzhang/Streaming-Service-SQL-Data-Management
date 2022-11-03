@@ -2,6 +2,7 @@ import sqlite3
 from scrolling import scrolling
 
 def numOfMatch(str, keywords):
+    # return the number of keyword matches
     matchCount = 0
     for keyword in keywords:
         if keyword.lower() in str.lower():
@@ -18,19 +19,16 @@ def tupleToList(listOfTuples): # copy a list of tuple to a list of lists
     return returnList
 
 def searchSongsAndPlaylists(uid, conn):
+    # search songs and playlists matching the keywords entered
     c = conn.cursor()
     keywords = ""
     print("------Search for songs and playlists-----")
     while keywords == "":
         keywords = input("Enter keywords separated by spaces: ")
 
-    keywords = keywords.split()
-    '''
-    keywords is a list of keywords
-    '''
-    '''
-    search for songs
-    '''
+    keywords = keywords.split() #keywords is a list of keywords
+    
+    #search for songs
     getSongs = '''
     SELECT DISTINCT s.sid, s.title, s.duration, 'song' as category
     FROM songs s
@@ -46,9 +44,7 @@ def searchSongsAndPlaylists(uid, conn):
     songs = c.fetchall()
     songs = tupleToList(songs)
 
-    '''
-    search for playlists
-    '''
+    #search for playlists
     getPlaylists = '''
     SELECT DISTINCT p.pid, p.title, SUM(s.duration), 'playlist' as category
     FROM songs s, playlists p, plinclude pl
@@ -64,8 +60,7 @@ def searchSongsAndPlaylists(uid, conn):
     playlists = c.fetchall()
     playlists = tupleToList(playlists)
 
-    # combine song and playlist lists
-    songsAndPlaylist = songs + playlists
+    songsAndPlaylist = songs + playlists # combine song and playlist lists
     #print(songsAndPlaylist)
     # add the numOfMatch to the end of each sublist
     for i in range(len(songsAndPlaylist)):
@@ -79,7 +74,6 @@ def searchSongsAndPlaylists(uid, conn):
         return True
     if scrolling(uid, songsAndPlaylist, 0, conn)==True:
         return True
-    
 
 #list1 = ["Kill", "You", "What", "Young", "Music"]
 #searchSongsAndPlaylists('u1',conn)

@@ -12,6 +12,7 @@ def clear(): # need to test this works on lab machine
         _ = system('clear')
  
 def showFive(list1, i):
+    # show five elements of a list at a time
     listLen = len(list1)
     if listLen == 0:
         i = 0
@@ -26,7 +27,9 @@ def showFive(list1, i):
         print(list1[j][0:-1])
         j+=1
     return
+
 def scrolling(uid,list1, i, conn):
+    # scroll up and down in a list showing 5 elements at a time
     c = conn.cursor()
     if i < 0:
         i = 0
@@ -46,7 +49,7 @@ def scrolling(uid,list1, i, conn):
             return True
     elif action == '2':
         pid = input("Enter the playlist's id: ")
-        if playlistInfo(uid, pid, conn)==True:
+        if playlistInfo(uid, pid, conn)==True: # return True to return to the main menu
             return True
     else:
         return True

@@ -13,6 +13,7 @@ def clear(): # need to test this works on lab machine
         _ = system('clear')
     
 def listen(uid, sid, conn):
+    # listen to a song
     c = conn.cursor()
     clear()
     # beta test works
@@ -40,6 +41,7 @@ def listen(uid, sid, conn):
     
     
 def haveListened(uid, sid, sno, conn):
+    # determine if user has listened to a song
     c = conn.cursor()
     c.execute('PRAGMA foreign_keys=ON;')
     haveListened = '''
@@ -97,6 +99,7 @@ def songInfo(sid, conn):
 #songInfo(10)
 
 def addSongToPlaylist(uid, sid, conn):
+    # support adding song to a playlist
     c = conn.cursor()    # beta test works
     clear()
     getPlaylists = '''
@@ -117,7 +120,7 @@ def addSongToPlaylist(uid, sid, conn):
         pid = input("Enter the pid of playlist you wish to add the song to: ")
         
         if userOwnsPlaylist(uid, pid, conn) == True: #need to verify that pid is valid and belongs to user
-        # add later: need to check if song already in playlist
+            #need to check if song already in playlist
             if songInPlaylist(pid, sid, conn):
                 print("This song is already in the selected playlist")
                 input("Enter anything to return to the main menu: ")
@@ -140,6 +143,7 @@ def addSongToPlaylist(uid, sid, conn):
     return True
 
 def sidValid(sid,conn):
+    # check if sid is a valid
     c = conn.cursor()
     query = '''
     SELECT *
@@ -153,6 +157,7 @@ def sidValid(sid,conn):
         return True
 
 def songActions(uid, sid, conn):
+    #support all actions performed on a song
     if not sidValid(sid, conn):
         print(sid,"is not a valid sid")
         input("Enter anything to return to the main menu")
