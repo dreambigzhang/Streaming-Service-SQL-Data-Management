@@ -83,7 +83,13 @@ def addSong(aid, conn):
     c = conn.cursor()
     print("------Add a new song------")
     title = input("Enter the title of the song: ")
-    duration = int(input("Enter the duration: "))
+    try:
+        duration = int(input("Enter the duration: "))
+    except:
+        print("ERROR: duration must be an integer")
+        input("press enter to continue")
+        return
+
 
     if not isNewSong(aid, title, duration, conn):
         print("Song with the same title and duration already exists")
@@ -144,7 +150,7 @@ def getUniqueSid(conn):
 
     c.execute(sidQuery)
     sids = c.fetchall()
-    if sids == None:
+    if sids == []:
         return 1
     return max([i[0] for i in sids]) + 1
 
@@ -170,5 +176,5 @@ if __name__ == "__main__":
     #print(isValidAid("a10", sqlite3.connect("./new.db")))
     #addSong("a10", sqlite3.connect("./new.db"))
     artistsMainMenu("a10", sqlite3.connect("./new.db"))
-
+    #print(getUniqueSid(sqlite3.connect("./new.db")))
     pass
