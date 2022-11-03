@@ -1,4 +1,3 @@
-
 def sessionActive(uid, conn): 
     c = conn.cursor()
     # beta test works
@@ -11,7 +10,8 @@ def sessionActive(uid, conn):
     c.execute(checkSessionActive, {'uid':uid})
     activeSession = c.fetchall()
     if activeSession != []:
-        sno = activeSession[0][0]
+        #print(activeSession)
+        sno = activeSession[-1][0]
         return sno
     else:
         return None
@@ -33,6 +33,8 @@ def startSession(uid, conn):
         '''
         c.execute(getSno, {'uid':uid})
         sno = c.fetchone()[0] # let sno be the max(sno) for the user plus 1
+        if sno == None:
+            sno = 0
         newSession = '''
         INSERT INTO sessions
         VALUES (:uid, :sno, strftime('%Y-%m-%d','now'), NULL);'''
@@ -40,7 +42,6 @@ def startSession(uid, conn):
         conn.commit()
         print("*New session created", sno)
         return sno
-        
 
 
 
