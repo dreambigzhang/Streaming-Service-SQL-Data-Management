@@ -2,12 +2,19 @@ import sqlite3
 from os import system, name
 from songActions import songActions
 
-def clear(): # need to test this works on lab machine
+def clear():
     if name == 'nt':
         _ = system('cls')
     else:
         _ = system('clear')
- 
+def validAid(aid, conn):
+    c = conn.cursor()
+    validAid = '''
+    SELECT * FROM artists a WHERE a.aid = :aid;'''
+    c.execute(validAid,{'aid':aid})
+    result = c.fetchall()
+    return (result!=[])
+
 def showFive(list1, i):
     listLen = len(list1)
     if listLen == 0:
@@ -18,7 +25,7 @@ def showFive(list1, i):
     clear()
     j = i
     print("--- Artist Search Result---")
-    print("  id |   name   | nationality | duration of all songs")
+    print("  id |   name   | nationality | number of songs")
     while j<i+5 and j<listLen:
         print(list1[j][0:-1])
         j+=1
@@ -40,6 +47,10 @@ def artistScrolling(uid,list1, i, conn):
             return True 
     elif action == '1':
         aid = input("Enter the artist's id: ")
+        if not validAid(aid, conn):
+            print("not valid aid")
+            input("Enter anything to return to the userMainMenu")
+            return True
         if artistInfo(uid, aid, conn) == True: # return True to return to the main menu
             return True
     else:
@@ -68,7 +79,7 @@ def showFiveSongs(list1, i):
     print("---Selected Artist's Songs---")
     print("id   |   title   |   duration")
     while j<i+5 and j<listLen:
-        print(list1[j][0:-1])
+        print(list1[j])
         j+=1
     return
 

@@ -73,7 +73,10 @@ def searchSongsAndPlaylists(uid, conn):
         # sort based on the number of keyword matches
     songsAndPlaylist.sort(key=lambda x: x[-1], reverse=True)
     #print(songsAndPlaylist)
-
+    if songsAndPlaylist ==[]:
+        print("No results")
+        input("Enter anything to return to the user main menu")
+        return True
     if scrolling(uid, songsAndPlaylist, 0, conn)==True:
         return True
     
