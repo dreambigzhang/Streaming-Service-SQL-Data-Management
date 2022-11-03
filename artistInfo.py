@@ -25,7 +25,7 @@ def showFive(list1, i):
     clear()
     j = i
     print("--- Artist Search Result---")
-    print("  id |   name   | nationality | duration of all songs")
+    print("  id |   name   | nationality | number of songs")
     while j<i+5 and j<listLen:
         print(list1[j][0:-1])
         j+=1
@@ -79,7 +79,7 @@ def showFiveSongs(list1, i):
     print("---Selected Artist's Songs---")
     print("id   |   title   |   duration")
     while j<i+5 and j<listLen:
-        print(list1[j][0:-1])
+        print(list1[j])
         j+=1
     return
 
