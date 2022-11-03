@@ -13,7 +13,7 @@ def validAid(aid, conn):
     SELECT * FROM artists a WHERE a.aid = :aid;'''
     c.execute(validAid,{'aid':aid})
     result = c.fetchall()
-    return (result==[])
+    return (result!=[])
 
 def showFive(list1, i):
     listLen = len(list1)
