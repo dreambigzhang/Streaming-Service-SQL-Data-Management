@@ -18,11 +18,11 @@ If the user inputs anything else during main page, they exit the program
 Once the artist logs in, they are prompted to enter 1 to add a new song, 2 to find top fans and playlists, and 4 to logout. If the artist decides to add a new song, they are prompted for the title and duration. If a song with the same name and duration exists, the artist is prompted to enter a 1 to proceed with the insertion. The artist is then prompted to enter any additional aids. If the aids are invalid, an error message is printed and they are returned to the artist's main menu. 
 
 ## Design
-main(): once valid input is placed into either login() or signup(), user either calls userMainMenu() or artistsMainMenu()
-userMainMenu(): give user the options to call startSession(), endSession(), searchSongAndPlaylists(), or searchArtists()
-songAction() is called whenever user selects a song
-artistsMainMenu(): gives the artist the options to add songs and show top fans and playlists
+- main(): once valid input is placed into either login() or signup(), user either calls userMainMenu() or artistsMainMenu()
+- userMainMenu(): give user the options to call startSession(), endSession(), searchSongAndPlaylists(), or searchArtists()
+- songAction() is called whenever user selects a song
+- artistsMainMenu(): gives the artist the options to add songs and show top fans and playlists
 displayUsersPlaylists(): display top users and playlists
-addSong(): add new song
+- addSong(): add new song
 <img width="815" alt="Screenshot 2022-12-03 at 4 45 04 PM" src="https://user-images.githubusercontent.com/104746082/205467049-80f6a68a-c941-415e-8532-a9f8600978bb.png">
 
